@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ParkingApp</string>
+    <string name="welcome_title">Welcome to Your Parking App</string>
+    <string name="start_button">Get Started</string>
+
+    <string name="login_title">Log in</string>
+    <string name="username_hint">Username</string>
+    <string name="password_hint">Password</string>
+    <string name="forgot_password">Forgot Your Password?</string>
+    <string name="login_button">Login</string>
+    <string name="dont_have_account">Don't have an account?</string>
+    <string name="register_now">Register Now</string>
+    <string name="bg_description">Background Image</string>
+
+</resources>

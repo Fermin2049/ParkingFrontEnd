@@ -1,13 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     tools:context=".iu.auth.LoginFragment">
 
-    <TextView
+    <!-- Background Image -->
+    <ImageView
+        android:id="@+id/bgImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg1"
+        android:contentDescription="@string/bg_description" />
 
-</FrameLayout>
+    <!-- Login Title -->
+    <TextView
+        android:id="@+id/loginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="128dp"
+        android:layout_marginStart="32dp"
+        android:text="@string/login_title"
+        android:textColor="@color/white"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- Username Input -->
+    <EditText
+        android:id="@+id/usernameInput"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/username_hint"
+        android:background="@drawable/gradient_input_background"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/loginTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="10dp" />
+
+    <!-- Password Input -->
+    <EditText
+        android:id="@+id/passwordInput"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:layout_marginTop="16dp"
+        android:hint="@string/password_hint"
+        android:background="@drawable/gradient_input_background"
+        android:textColorHint="@color/white"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:inputType="textPassword"
+        app:layout_constraintTop_toBottomOf="@+id/usernameInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="10dp" />
+
+    <!-- Forgot Password Text -->
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/forgot_password"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/passwordInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Login Button -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/loginButton"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/login_button"
+        android:textSize="22sp"
+        android:background="@drawable/gradient_button_background"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/forgotPassword"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- Register Text -->
+    <TextView
+        android:id="@+id/registerText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/dont_have_account"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/loginButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/registerNow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/register_now"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@+id/registerText"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
