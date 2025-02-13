@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="registerTitle" type="id" />
+    <item name="nameInput" type="id" />
+    <item name="phoneInput" type="id" />
+    <item name="licensePlateInput" type="id" />
+    <item name="registerButton" type="id" />
+</resources>

@@ -9,8 +9,26 @@
     <string name="password_hint">Password</string>
     <string name="forgot_password">Forgot Your Password?</string>
     <string name="login_button">Login</string>
-    <string name="dont_have_account">Don't have an account?</string>
+    <string name="dont_have_account">Don\'t have an account?</string>
     <string name="register_now">Register Now</string>
     <string name="bg_description">Background Image</string>
+
+    <string name="forgot_password_title">Forgot Password</string>
+    <string name="email_hint">Email Address</string>
+    <string name="reset_password_button">Reset Password</string>
+
+    <string name="register_title">Register</string>
+    <string name="name_hint">Name</string>
+    <string name="phone_hint">Phone</string>
+    <string name="license_plate_hint">License Plate</string>
+    <string name="register_button">Register</string>
+
+    <string name="name_icon_desc">Username icon</string>
+    <string name="phone_icon_desc">Phone icon</string>
+    <string name="email_icon_desc">Email icon</string>
+    <string name="license_plate_icon_desc">License plate icon</string>
+    <string name="password_icon_desc">Password icon</string>
+
+
 
 </resources>
