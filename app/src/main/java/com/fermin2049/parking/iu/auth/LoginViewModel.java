@@ -2,10 +2,7 @@ package com.fermin2049.parking.iu.auth;
 
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -15,8 +12,7 @@ import com.fermin2049.parking.iu.main.MainActivity;
 import com.fermin2049.parking.network.ApiClient;
 import com.fermin2049.parking.network.ApiService;
 
-import java.io.IOException;
-
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,11 +25,16 @@ public class LoginViewModel extends ViewModel {
         this.context = context;
     }
 
-    public LiveData<LoginResponse> getLoginResult() {
+    public MutableLiveData<LoginResponse> getLoginResult() {
         return loginResult;
     }
 
     public void performLogin(String email, String password) {
+        if (email.isEmpty() || password.isEmpty()) {
+            showErrorDialog("Validation Error", "Please fill all fields.");
+            return;
+        }
+
         ApiService apiService = ApiClient.getClient().create(ApiService.class);
         LoginRequest loginRequest = new LoginRequest(email, password);
 
@@ -41,17 +42,15 @@ public class LoginViewModel extends ViewModel {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("LoginViewModel", "Login successful. Token: " + response.body().getToken());
+                    loginResult.setValue(response.body());
                     navigateToMainActivity();
                 } else {
-                    Log.e("LoginViewModel", "Login failed: " + response.message());
                     showErrorDialog("Login Error", "Invalid credentials.");
                 }
             }
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.e("LoginViewModel", "Network failure: " + t.getMessage());
                 showErrorDialog("Network Error", "Failed to connect. Please try again.");
             }
         });
@@ -63,8 +62,10 @@ public class LoginViewModel extends ViewModel {
         context.startActivity(intent);
     }
 
-
     public void showErrorDialog(String title, String message) {
-        Toast.makeText(context, title + ": " + message, Toast.LENGTH_LONG).show();
+        new SweetAlertDialog(context, SweetAlertDialog.ERROR_TYPE)
+                .setTitleText(title)
+                .setContentText(message)
+                .show();
     }
 }

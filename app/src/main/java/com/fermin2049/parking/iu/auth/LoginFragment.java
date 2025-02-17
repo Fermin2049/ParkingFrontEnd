@@ -4,14 +4,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.fermin2049.parking.R;
 import com.fermin2049.parking.databinding.FragmentLoginBinding;
 
 public class LoginFragment extends Fragment {
@@ -24,26 +24,29 @@ public class LoginFragment extends Fragment {
         loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         loginViewModel.setContext(requireContext());
 
-        // Observando el resultado del login
-        loginViewModel.getLoginResult().observe(getViewLifecycleOwner(), result -> {
-            if (result != null) {
-                Toast.makeText(requireContext(), "Login Successful! Token: " + result.getToken(), Toast.LENGTH_LONG).show();
-                // Aquí puedes navegar al MainActivity
-            } else {
-                loginViewModel.showErrorDialog("Login Failed", "Please check your credentials.");
-            }
-        });
-
         // Login button click listener
         binding.loginButton.setOnClickListener(v -> {
             String email = binding.usernameInput.getText().toString().trim();
             String password = binding.passwordInput.getText().toString().trim();
+            loginViewModel.performLogin(email, password);
+        });
 
-            if (!email.isEmpty() && !password.isEmpty()) {
-                loginViewModel.performLogin(email, password);
-            } else {
-                loginViewModel.showErrorDialog("Validation Error", "Please fill all fields.");
-            }
+        // Forgot Password click listener
+        binding.forgotPassword.setOnClickListener(v -> {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            transaction.replace(android.R.id.content, new ForgotPasswordFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
+        });
+
+        // Register click listener
+        binding.registerNow.setOnClickListener(v -> {
+            FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+            transaction.setCustomAnimations(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            transaction.replace(android.R.id.content, new RegisterFragment());
+            transaction.addToBackStack(null);
+            transaction.commit();
         });
 
         return binding.getRoot();
