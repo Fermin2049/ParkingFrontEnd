@@ -14,13 +14,12 @@ public interface ApiService {
     @POST("auth/login-cliente")
     Call<LoginResponse> loginCliente(@Body LoginRequest loginRequest);
 
-
-    @POST("/api/clientes/recuperar-password")  // ✅ URL correcta
+    @POST("clientes/recuperar-password")
     Call<Void> recuperarPassword(@Body RecuperarPasswordRequest request);
 
-    @POST("clientes")  // URL según la API
+    @POST("clientes")
     Call<Void> registerCliente(@Body RegisterRequest request);
 
-
-
+    @POST("auth/login-google")
+    Call<LoginResponse> loginWithGoogle(@Body String googleIdToken);
 }

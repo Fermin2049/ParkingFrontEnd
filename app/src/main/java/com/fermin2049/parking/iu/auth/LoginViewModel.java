@@ -11,6 +11,13 @@ import com.fermin2049.parking.data.models.LoginResponse;
 import com.fermin2049.parking.iu.main.MainActivity;
 import com.fermin2049.parking.network.ApiClient;
 import com.fermin2049.parking.network.ApiService;
+import com.google.android.gms.auth.api.identity.SignInClient;
+import com.google.android.gms.auth.api.identity.SignInCredential;
+import com.google.android.gms.auth.api.identity.Identity;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
@@ -20,9 +27,11 @@ import retrofit2.Response;
 public class LoginViewModel extends ViewModel {
     private Context context;
     private MutableLiveData<LoginResponse> loginResult = new MutableLiveData<>();
+    private SignInClient oneTapClient;
 
     public void setContext(Context context) {
         this.context = context;
+        this.oneTapClient = Identity.getSignInClient(context);
     }
 
     public MutableLiveData<LoginResponse> getLoginResult() {
@@ -54,6 +63,42 @@ public class LoginViewModel extends ViewModel {
                 showErrorDialog("Network Error", "Failed to connect. Please try again.");
             }
         });
+    }
+
+    public void handleGoogleSignInResult(int requestCode, Intent data) {
+        if (requestCode == 1000) {  // RC_SIGN_IN
+            try {
+                SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
+                String googleIdToken = credential.getGoogleIdToken();
+
+                if (googleIdToken != null) {
+                    authenticateWithGoogle(googleIdToken);
+                } else {
+                    showErrorDialog("Google Sign-In Failed", "No ID Token found.");
+                }
+            } catch (Exception e) {
+                showErrorDialog("Google Sign-In Error", "Could not retrieve credential.");
+            }
+        }
+    }
+
+    public void authenticateWithGoogle(String googleIdToken) {
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        AuthCredential credential = GoogleAuthProvider.getCredential(googleIdToken, null);
+
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                        if (user != null) {
+                            navigateToMainActivity();
+                        } else {
+                            showErrorDialog("Google Sign-In Failed", "User authentication failed.");
+                        }
+                    } else {
+                        showErrorDialog("Google Sign-In Failed", "Authentication error.");
+                    }
+                });
     }
 
     private void navigateToMainActivity() {
