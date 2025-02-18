@@ -56,6 +56,9 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
 
+    //recaptcha
+    implementation("com.github.hCaptcha.hcaptcha-android-sdk:sdk:4.0.3")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

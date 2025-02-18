@@ -7,13 +7,24 @@ public class RegisterRequest {
     private String email;
     private String vehiculoPlaca;
     private String password;
+    private String hcaptchaToken;
 
-    public RegisterRequest(String nombre, String telefono, String email, String vehiculoPlaca, String password) {
+
+    public RegisterRequest(String nombre, String telefono, String email, String vehiculoPlaca, String password, String hcaptchaToken) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.email = email;
         this.vehiculoPlaca = vehiculoPlaca;
         this.password = password;
+        this.hcaptchaToken = hcaptchaToken;
+    }
+
+    public String getHcaptchaToken() {
+        return hcaptchaToken;
+    }
+
+    public void setHcaptchaToken(String hcaptchaToken) {
+        this.hcaptchaToken = hcaptchaToken;
     }
 
     public String getNombre() {
