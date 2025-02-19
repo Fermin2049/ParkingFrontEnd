@@ -5,23 +5,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.fermin2049.parking.R;
 import com.fermin2049.parking.data.models.EspacioEstacionamiento;
+
 import java.util.List;
 
 public class EspacioAdapter extends RecyclerView.Adapter<EspacioAdapter.EspacioViewHolder> {
 
-    private List<EspacioEstacionamiento> espacios;
+    private List<EspacioEstacionamiento> listaEspacios;
     private OnItemClickListener listener;
 
     public interface OnItemClickListener {
-        void onReservarClick(EspacioEstacionamiento espacio);
+        void onItemClick(EspacioEstacionamiento espacio);
     }
 
-    public EspacioAdapter(List<EspacioEstacionamiento> espacios, OnItemClickListener listener) {
-        this.espacios = espacios;
+    public EspacioAdapter(List<EspacioEstacionamiento> listaEspacios, OnItemClickListener listener) {
+        this.listaEspacios = listaEspacios;
         this.listener = listener;
     }
 
@@ -34,37 +37,37 @@ public class EspacioAdapter extends RecyclerView.Adapter<EspacioAdapter.EspacioV
 
     @Override
     public void onBindViewHolder(@NonNull EspacioViewHolder holder, int position) {
-        EspacioEstacionamiento espacio = espacios.get(position);
-        holder.bind(espacio);
+        EspacioEstacionamiento espacio = listaEspacios.get(position);
+
+        // Mostrar el número de espacio
+        holder.tvNumeroEspacio.setText("Espacio #" + espacio.getNumeroEspacio());
+
+        // Mostrar el estado del espacio
+        holder.tvEstadoEspacio.setText("Estado: " + espacio.getEstado());
+
+        // Mostrar el tipo de espacio (ej. Normal, Discapacitados)
+        holder.tvTipoEspacio.setText("Tipo: " + espacio.getTipoEspacio());
+
+        // Manejo del clic en el botón de selección
+        holder.btnReservar.setOnClickListener(v -> listener.onItemClick(espacio));
     }
 
     @Override
     public int getItemCount() {
-        return espacios.size();
+        return listaEspacios.size();
     }
 
-    public class EspacioViewHolder extends RecyclerView.ViewHolder {
-        private TextView textEspacio;
-        private TextView textEstado;
-        private Button btnReservar;
+    public static class EspacioViewHolder extends RecyclerView.ViewHolder {
+        TextView tvNumeroEspacio, tvEstadoEspacio, tvTipoEspacio;
+        Button btnReservar;
 
         public EspacioViewHolder(@NonNull View itemView) {
             super(itemView);
-            textEspacio = itemView.findViewById(R.id.textEspacio);
-            textEstado = itemView.findViewById(R.id.textEstado);
+            tvNumeroEspacio = itemView.findViewById(R.id.textEspacio);
+            tvEstadoEspacio = itemView.findViewById(R.id.textEstado);
+            tvTipoEspacio = itemView.findViewById(R.id.textTipoEspacio); // Asegurar que existe
             btnReservar = itemView.findViewById(R.id.btnReservar);
         }
-
-        public void bind(final EspacioEstacionamiento espacio) {
-            textEspacio.setText("Espacio: " + espacio.getNumeroEspacio());
-            textEstado.setText("Estado: " + (espacio.getEstado().equalsIgnoreCase("Disponible") ? "Disponible" : "Ocupado"));
-
-            btnReservar.setEnabled(espacio.isDisponible());
-            btnReservar.setOnClickListener(v -> {
-                if (listener != null) {
-                    listener.onReservarClick(espacio);
-                }
-            });
-        }
     }
+
 }
