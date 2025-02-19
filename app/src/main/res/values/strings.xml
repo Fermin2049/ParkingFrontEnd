@@ -31,6 +31,40 @@
     <string name="password_icon_desc">Icono de contraseña</string>
     <string name="default_web_client_id">581098698893-gnn2lonk77l816r3d3crb24cqh63jvl2.apps.googleusercontent.com</string>
 
+    <string name="menu_dashboard">Inicio</string>
+    <string name="menu_parking_location">Ubicación</string>
+    <string name="menu_payments">Pagos</string>
+    <string name="menu_notifications">Notificaciones</string>
+    <string name="menu_settings">Ajustes</string>
+
+    <string name="biometric_login_error">Error de Inicio con Huella</string>
+    <string name="no_saved_credentials">No hay credenciales guardadas.</string>
+    <string name="authentication_failed">Autenticación Fallida</string>
+    <string name="try_again">Inténtalo de nuevo.</string>
+    <string name="authentication_error">Error de Autenticación</string>
+    <string name="use_fingerprint">Usa tu huella para ingresar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="validation_error">Error de Validación</string>
+    <string name="fill_all_fields">Por favor, completa todos los campos.</string>
+    <string name="login_error">Error de Login</string>
+    <string name="invalid_credentials">Credenciales incorrectas.</string>
+    <string name="network_error">Error de Red</string>
+    <string name="server_connection_failed">No se pudo conectar con el servidor.</string>
+    <string name="authentication_error_title">Error de Autenticación</string>
+    <string name="invalid_token">No se recibió un token válido.</string>
+
+
+    <string name="enter_email">Por favor, ingresa tu correo electrónico.</string>
+    <string name="email_sent">Correo enviado</string>
+    <string name="reset_password_instructions">Se han enviado instrucciones para restablecer tu contraseña.</string>
+    <string name="error">Error</string>
+    <string name="no_account_found">No se encontró una cuenta con este correo.</string>
+    <string name="failed_to_connect">No se pudo conectar al servidor. Inténtalo de nuevo.</string>
+
+    <string name="registration_success">Registro Exitoso</string>
+    <string name="account_created">Tu cuenta ha sido creada.</string>
+    <string name="registration_failed">Error en el Registro</string>
+    <string name="server_validation_failed">Falló la validación en el servidor.</string>
 
 
 

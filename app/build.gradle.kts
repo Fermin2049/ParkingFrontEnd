@@ -59,6 +59,9 @@ dependencies {
     //recaptcha
     implementation("com.github.hCaptcha.hcaptcha-android-sdk:sdk:4.0.3")
 
+
+    implementation ("androidx.biometric:biometric:1.2.0-alpha05")
+
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.activity)

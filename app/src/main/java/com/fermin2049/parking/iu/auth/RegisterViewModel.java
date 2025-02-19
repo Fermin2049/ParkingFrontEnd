@@ -1,9 +1,8 @@
 package com.fermin2049.parking.iu.auth;
 
 import android.content.Context;
-
 import androidx.lifecycle.ViewModel;
-
+import com.fermin2049.parking.R;
 import com.fermin2049.parking.data.models.RegisterRequest;
 import com.fermin2049.parking.network.ApiClient;
 import com.fermin2049.parking.network.ApiService;
@@ -21,7 +20,7 @@ public class RegisterViewModel extends ViewModel {
 
     public void performRegistration(String name, String phone, String email, String licensePlate, String password, String hcaptchaToken) {
         if (name.isEmpty() || phone.isEmpty() || email.isEmpty() || licensePlate.isEmpty() || password.isEmpty() || hcaptchaToken.isEmpty()) {
-            showErrorDialog("Validation Error", "Please fill all fields.");
+            showErrorDialog(context.getString(R.string.validation_error), context.getString(R.string.fill_all_fields));
             return;
         }
 
@@ -32,15 +31,15 @@ public class RegisterViewModel extends ViewModel {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    showSuccessDialog("Registration Successful", "Your account has been created.");
+                    showSuccessDialog(context.getString(R.string.registration_success), context.getString(R.string.account_created));
                 } else {
-                    showErrorDialog("Registration Failed", "Server validation failed.");
+                    showErrorDialog(context.getString(R.string.registration_failed), context.getString(R.string.server_validation_failed));
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                showErrorDialog("Network Error", "Failed to connect to the server.");
+                showErrorDialog(context.getString(R.string.network_error), context.getString(R.string.failed_to_connect));
             }
         });
     }
