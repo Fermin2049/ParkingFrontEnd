@@ -12,10 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.fermin2049.parking.R;
 import com.fermin2049.parking.iu.adapters.EspacioAdapter;
-import com.fermin2049.parking.iu.payment.PaymentFragment;
 import com.fermin2049.parking.data.models.EspacioEstacionamiento;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.List;
 
 public class DashboardFragment extends Fragment {
 
@@ -35,8 +33,10 @@ public class DashboardFragment extends Fragment {
         recyclerEspacios.setLayoutManager(new LinearLayoutManager(getContext()));
 
         dashboardViewModel.getEspaciosDisponibles().observe(getViewLifecycleOwner(), espacios -> {
-                EspacioAdapter adapter = new EspacioAdapter(espacios, this::irAPago);
-                recyclerEspacios.setAdapter(adapter);
+            EspacioAdapter adapter = new EspacioAdapter(espacios, espacio ->
+                    dashboardViewModel.irAPago(requireActivity(), espacio) // Pasando la actividad al ViewModel
+            );
+            recyclerEspacios.setAdapter(adapter);
         });
 
         dashboardViewModel.cargarEspaciosDisponibles();
@@ -46,21 +46,7 @@ public class DashboardFragment extends Fragment {
         return view;
     }
 
-    private void irAPago(EspacioEstacionamiento espacio) {
-        Fragment paymentFragment = new PaymentFragment();
-        Bundle args = new Bundle();
-        args.putInt("idEspacio", espacio.getIdEspacio());
-        args.putString("numeroEspacio", String.valueOf(espacio.getNumeroEspacio()));
-        paymentFragment.setArguments(args);
-
-        requireActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_container, paymentFragment)
-                .addToBackStack(null)
-                .commit();
-    }
-
     private void abrirChat() {
-        // Aquí iría la lógica para abrir el chat con la IA
+        // Lógica para abrir el chat con la IA
     }
 }
