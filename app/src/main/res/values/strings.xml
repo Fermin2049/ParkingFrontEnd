@@ -66,6 +66,11 @@
     <string name="registration_failed">Error en el Registro</string>
     <string name="server_validation_failed">Falló la validación en el servidor.</string>
 
+    <!-- Mensajes de autenticación simplificados -->
+    <string name="google_signin_error">Error al iniciar sesión con Google.</string>
+    <string name="generic_error">Ocurrió un error. Por favor, inténtalo de nuevo.</string>
+
+
 
 
 </resources>

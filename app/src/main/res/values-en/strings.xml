@@ -64,5 +64,8 @@
     <string name="registration_failed">Registration Failed</string>
     <string name="server_validation_failed">Server validation failed.</string>
 
+    <!-- Simplified authentication messages -->
+    <string name="google_signin_error">Error signing in with Google.</string>
+    <string name="generic_error">An error occurred. Please try again.</string>
 
 </resources>

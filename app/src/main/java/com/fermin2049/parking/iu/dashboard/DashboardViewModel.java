@@ -11,10 +11,13 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import com.fermin2049.parking.R;
+import com.fermin2049.parking.data.models.BannerOferta;
 import com.fermin2049.parking.data.models.EspacioEstacionamiento;
 import com.fermin2049.parking.iu.payment.PaymentFragment;
 import com.fermin2049.parking.network.ApiClient;
 import com.fermin2049.parking.network.ApiService;
+
+import java.util.Arrays;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -23,6 +26,7 @@ import retrofit2.Response;
 public class DashboardViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<EspacioEstacionamiento>> espaciosDisponibles = new MutableLiveData<>();
+    private final MutableLiveData<List<BannerOferta>> bannersLiveData = new MutableLiveData<>();
     private final ApiService apiService;
 
     public DashboardViewModel(@NonNull Application application) {
@@ -33,6 +37,21 @@ public class DashboardViewModel extends AndroidViewModel {
     public LiveData<List<EspacioEstacionamiento>> getEspaciosDisponibles() {
         return espaciosDisponibles;
     }
+
+    public LiveData<List<BannerOferta>> getBanners() {
+        return bannersLiveData;
+    }
+
+    public void cargarBanners() {
+        List<BannerOferta> banners = Arrays.asList(
+                new BannerOferta("10% de Descuento", "En alquiler mensual.", R.drawable.banner_descuento),
+                new BannerOferta("1 Hora Gratis", "Pagando más de 5 horas.", R.drawable.banner_hora),
+                new BannerOferta("Lavado de Autos", "Servicio disponible en el estacionamiento.", R.drawable.banner_lavado),
+                new BannerOferta("20% de Descuento", "Pagando con billetera virtual Mercado Pago", R.drawable.banner_velletera)
+        );
+        bannersLiveData.setValue(banners);
+    }
+
 
     public void cargarEspaciosDisponibles() {
         String token = "Bearer " + obtenerToken();

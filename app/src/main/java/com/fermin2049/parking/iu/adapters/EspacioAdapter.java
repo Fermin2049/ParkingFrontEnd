@@ -14,14 +14,9 @@ import com.fermin2049.parking.data.models.EspacioEstacionamiento;
 
 import java.util.List;
 
-public class EspacioAdapter extends RecyclerView.Adapter<EspacioAdapter.EspacioViewHolder> {
-
+public class EspacioAdapter extends RecyclerView.Adapter<EspacioAdapter.ViewHolder> {
     private List<EspacioEstacionamiento> listaEspacios;
     private OnItemClickListener listener;
-
-    public interface OnItemClickListener {
-        void onItemClick(EspacioEstacionamiento espacio);
-    }
 
     public EspacioAdapter(List<EspacioEstacionamiento> listaEspacios, OnItemClickListener listener) {
         this.listaEspacios = listaEspacios;
@@ -30,25 +25,19 @@ public class EspacioAdapter extends RecyclerView.Adapter<EspacioAdapter.EspacioV
 
     @NonNull
     @Override
-    public EspacioViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_espacio, parent, false);
-        return new EspacioViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull EspacioViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         EspacioEstacionamiento espacio = listaEspacios.get(position);
+        holder.textEspacio.setText("Espacio #" + espacio.getNumeroEspacio());
+        holder.textEstado.setText("Estado: " + espacio.getEstado());
+        holder.textTipo.setText("Tipo: " + espacio.getTipoEspacio());
+        holder.textSector.setText("Sector: " + espacio.getSector()); // Agregar sector
 
-        // Mostrar el número de espacio
-        holder.tvNumeroEspacio.setText("Espacio #" + espacio.getNumeroEspacio());
-
-        // Mostrar el estado del espacio
-        holder.tvEstadoEspacio.setText("Estado: " + espacio.getEstado());
-
-        // Mostrar el tipo de espacio (ej. Normal, Discapacitados)
-        holder.tvTipoEspacio.setText("Tipo: " + espacio.getTipoEspacio());
-
-        // Manejo del clic en el botón de selección
         holder.btnReservar.setOnClickListener(v -> listener.onItemClick(espacio));
     }
 
@@ -57,17 +46,22 @@ public class EspacioAdapter extends RecyclerView.Adapter<EspacioAdapter.EspacioV
         return listaEspacios.size();
     }
 
-    public static class EspacioViewHolder extends RecyclerView.ViewHolder {
-        TextView tvNumeroEspacio, tvEstadoEspacio, tvTipoEspacio;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        TextView textEspacio, textEstado, textTipo, textSector; // Agregar sector
         Button btnReservar;
 
-        public EspacioViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            tvNumeroEspacio = itemView.findViewById(R.id.textEspacio);
-            tvEstadoEspacio = itemView.findViewById(R.id.textEstado);
-            tvTipoEspacio = itemView.findViewById(R.id.textTipoEspacio); // Asegurar que existe
+            textEspacio = itemView.findViewById(R.id.textEspacio);
+            textEstado = itemView.findViewById(R.id.textEstado);
+            textTipo = itemView.findViewById(R.id.textTipoEspacio);
+            textSector = itemView.findViewById(R.id.textSector); // Asignar referencia
             btnReservar = itemView.findViewById(R.id.btnReservar);
         }
     }
 
+    public interface OnItemClickListener {
+        void onItemClick(EspacioEstacionamiento espacio);
+    }
 }
+
