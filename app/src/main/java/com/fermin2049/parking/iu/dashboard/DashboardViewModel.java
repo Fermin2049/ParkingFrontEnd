@@ -16,7 +16,7 @@ import com.fermin2049.parking.data.models.EspacioEstacionamiento;
 import com.fermin2049.parking.iu.payment.PaymentFragment;
 import com.fermin2049.parking.network.ApiClient;
 import com.fermin2049.parking.network.ApiService;
-
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import retrofit2.Call;
@@ -28,6 +28,9 @@ public class DashboardViewModel extends AndroidViewModel {
     private final MutableLiveData<List<EspacioEstacionamiento>> espaciosDisponibles = new MutableLiveData<>();
     private final MutableLiveData<List<BannerOferta>> bannersLiveData = new MutableLiveData<>();
     private final ApiService apiService;
+
+    // Se guarda la lista completa cargada desde la API para luego filtrar
+    private List<EspacioEstacionamiento> listaCompletaEspacios = new ArrayList<>();
 
     public DashboardViewModel(@NonNull Application application) {
         super(application);
@@ -52,27 +55,41 @@ public class DashboardViewModel extends AndroidViewModel {
         bannersLiveData.setValue(banners);
     }
 
-
     public void cargarEspaciosDisponibles() {
         String token = "Bearer " + obtenerToken();
-
         if (token.isEmpty() || token.equals("Bearer ")) {
             return;
         }
-
         apiService.getEspaciosDisponibles(token).enqueue(new Callback<List<EspacioEstacionamiento>>() {
             @Override
             public void onResponse(Call<List<EspacioEstacionamiento>> call, Response<List<EspacioEstacionamiento>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    espaciosDisponibles.setValue(response.body());
+                    listaCompletaEspacios = response.body();
+                    espaciosDisponibles.setValue(listaCompletaEspacios);
                 }
             }
-
             @Override
             public void onFailure(Call<List<EspacioEstacionamiento>> call, Throwable t) {
-                // Manejo de error silencioso
+                // Manejo de error (puedes notificar al usuario)
             }
         });
+    }
+
+    /**
+     * Filtra la lista de espacios disponibles por tipo.
+     * @param tipo El tipo de espacio seleccionado (por ejemplo, "Normal", "Motocicleta" o "Discapacitados").
+     */
+    public void filtrarEspacios(String tipo) {
+        if (listaCompletaEspacios == null || listaCompletaEspacios.isEmpty()) {
+            return;
+        }
+        List<EspacioEstacionamiento> filtrados = new ArrayList<>();
+        for (EspacioEstacionamiento espacio : listaCompletaEspacios) {
+            if (espacio.getTipoEspacio() != null && espacio.getTipoEspacio().equalsIgnoreCase(tipo)) {
+                filtrados.add(espacio);
+            }
+        }
+        espaciosDisponibles.setValue(filtrados);
     }
 
     private String obtenerToken() {

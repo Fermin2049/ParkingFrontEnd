@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Título para sección Reservar -->
+        <TextView
+            android:id="@+id/tvReservarTitulo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reservar Espacio"
+            android:textSize="18sp"
+            android:textColor="@android:color/white"
+            android:layout_marginBottom="8dp"/>
+
+        <!-- Fila de fecha y hora -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- EditText para la fecha -->
+            <EditText
+                android:id="@+id/etFechaReserva"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Fecha (dd-MM-yyyy)"
+                android:focusable="false"
+                android:clickable="true"
+                android:background="@drawable/gradient_input_background"
+                android:padding="8dp"
+                android:textColor="@android:color/white"/>
+
+            <!-- Espacio entre ambos -->
+            <View
+                android:layout_width="8dp"
+                android:layout_height="match_parent"/>
+
+            <!-- EditText para la hora de salida -->
+            <EditText
+                android:id="@+id/etHoraSalida"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Hora salida (HH:mm)"
+                android:focusable="false"
+                android:clickable="true"
+                android:background="@drawable/gradient_input_background"
+                android:padding="8dp"
+                android:textColor="@android:color/white"/>
+        </LinearLayout>
+
+        <!-- Spinner para seleccionar el tipo de espacio -->
+        <Spinner
+            android:id="@+id/spinnerTipo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"/>
+
+        <!-- Botón para realizar la acción de Reservar -->
+        <Button
+            android:id="@+id/btnFiltrar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reservar"
+            android:layout_marginTop="8dp"/>
+
+        <!-- RecyclerView para mostrar los espacios disponibles -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerEspacios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"/>
+    </LinearLayout>
+</ScrollView>

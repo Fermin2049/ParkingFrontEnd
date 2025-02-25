@@ -1,69 +1,81 @@
 package com.fermin2049.parking.iu.dashboard;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 import com.fermin2049.parking.R;
+import com.fermin2049.parking.databinding.FragmentDashboardBinding;
 import com.fermin2049.parking.iu.adapters.BannerAdapter;
-import com.fermin2049.parking.iu.adapters.EspacioAdapter;
-import com.fermin2049.parking.data.models.BannerOferta;
-import com.fermin2049.parking.data.models.EspacioEstacionamiento;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import java.util.List;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class DashboardFragment extends Fragment {
 
+    private FragmentDashboardBinding binding;
     private DashboardViewModel dashboardViewModel;
-    private RecyclerView recyclerEspacios, recyclerBanners;
-    private FloatingActionButton fabChat;
+    private DashboardTabAdapter tabAdapter;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_dashboard, container, false);
+    public View onCreateView(@NonNull android.view.LayoutInflater inflater,
+                             @Nullable android.view.ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        // Inflar el layout usando binding
+        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
+    @Override
+    public void onViewCreated(@NonNull android.view.View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // Inicializar el ViewModel
         dashboardViewModel = new ViewModelProvider(this).get(DashboardViewModel.class);
 
-        recyclerEspacios = view.findViewById(R.id.recyclerEspacios);
-        recyclerBanners = view.findViewById(R.id.recyclerBanners);
-        fabChat = view.findViewById(R.id.fabChat);
+        // --- Configurar el RecyclerView para los banners ---
+        binding.recyclerBanners.setLayoutManager(
+                new androidx.recyclerview.widget.LinearLayoutManager(getContext(),
+                        androidx.recyclerview.widget.LinearLayoutManager.HORIZONTAL, false));
+        // Inicialmente usamos una lista vacía para evitar problemas
+        BannerAdapter bannerAdapter = new BannerAdapter(new java.util.ArrayList<>());
+        binding.recyclerBanners.setAdapter(bannerAdapter);
 
-        // Configuración de RecyclerView para espacios de estacionamiento
-        recyclerEspacios.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        dashboardViewModel.getEspaciosDisponibles().observe(getViewLifecycleOwner(), espacios -> {
-            EspacioAdapter adapter = new EspacioAdapter(espacios, espacio ->
-                    dashboardViewModel.irAPago(requireActivity(), espacio));
-            recyclerEspacios.setAdapter(adapter);
-        });
-
-        dashboardViewModel.cargarEspaciosDisponibles();
-
-        // Configuración de RecyclerView para banners de ofertas
-        recyclerBanners.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-
+        // Observar el LiveData de banners para actualizar el adaptador cuando se carguen
         dashboardViewModel.getBanners().observe(getViewLifecycleOwner(), banners -> {
             if (banners != null) {
-                BannerAdapter adapter = new BannerAdapter(banners);
-                recyclerBanners.setAdapter(adapter);
+                BannerAdapter newAdapter = new BannerAdapter(banners);
+                binding.recyclerBanners.setAdapter(newAdapter);
             }
         });
+        // Cargar los banners
+        dashboardViewModel.cargarBanners();
 
-        dashboardViewModel.cargarBanners(); // Asegura que los banners se carguen
+        // --- Configurar el TabLayout y ViewPager2 ---
+        tabAdapter = new DashboardTabAdapter(this);
+        binding.viewPager.setAdapter(tabAdapter);
+        new TabLayoutMediator(binding.tabLayout, binding.viewPager, (tab, position) -> {
+            if (position == 0) {
+                tab.setText("Reservar");
+            } else if (position == 1) {
+                tab.setText("Acceso sin Reserva");
+            }
+        }).attach();
 
-        fabChat.setOnClickListener(v -> abrirChat());
-
-        return view;
+        // --- Configurar el botón flotante para el chat ---
+        binding.fabChat.setOnClickListener(v -> abrirChat());
     }
 
     private void abrirChat() {
-        // Lógica para abrir el chat con la IA
+        // Aquí implementa la lógica para abrir el chat con la IA.
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvAccesoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Acceso sin Reserva"
+        android:textColor="@android:color/white"
+        android:textSize="20sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"/>
+
+    <!-- Descripción -->
+    <TextView
+        android:id="@+id/tvAccesoDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Escanea el QR para ser ingresado en el estacionamiento sin reserva previa."
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/tvAccesoTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"/>
+
+    <!-- Imagen del QR -->
+    <ImageView
+        android:id="@+id/ivQRCode"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:src="@drawable/qr_placeholder"
+        android:contentDescription="QR Code"
+        app:layout_constraintTop_toBottomOf="@id/tvAccesoDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>

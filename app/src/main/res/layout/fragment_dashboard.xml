@@ -1,75 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/black"
-    tools:context=".iu.dashboard.DashboardFragment">
+    android:layout_height="match_parent">
 
+    <!-- Imagen de fondo -->
     <ImageView
         android:id="@+id/bgImage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/bg1"
-        android:contentDescription="@string/bg_description" />
+        android:contentDescription="@string/bg_description"/>
 
-    <!-- Título -->
-    <TextView
-        android:id="@+id/dashboardTitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Estacionamientos Disponibles"
-        android:textSize="22sp"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="16dp"/>
-
-    <!-- Banners de Promociones -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerBanners"
+    <!-- Contenedor principal con contenido vertical -->
+    <LinearLayout
+        android:id="@+id/contentContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:clipToPadding="false"
-        android:clipChildren="false"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        android:padding="8dp"
-        app:layout_constraintTop_toBottomOf="@id/dashboardTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp">
 
+        <!-- RecyclerView para banners de ofertas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerBanners"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:clipToPadding="false"
+            android:clipChildren="false"/>
 
-    <!-- Espacios de Estacionamiento Disponibles -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerEspacios"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:padding="8dp"
-        android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintTop_toBottomOf="@id/recyclerBanners"
-        app:layout_constraintBottom_toTopOf="@id/fabChat"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        <!-- Título para la sección de Acceso al Estacionamiento -->
+        <TextView
+            android:id="@+id/tvEstacionamientoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Acceso al Estacionamiento"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:layout_marginTop="8dp"/>
 
-    <!-- Botón Flotante para el Chat -->
+        <!-- TabLayout para las pestañas (Reservar y Acceso sin Reserva) -->
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:tabIndicatorColor="@color/white"
+            app:tabTextColor="@color/white"
+            android:layout_marginTop="8dp"/>
+
+        <!-- ViewPager2 para mostrar el contenido de cada pestaña -->
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+    </LinearLayout>
+
+    <!-- Botón flotante para el chat, ubicado en la esquina inferior derecha -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="84dp"
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_chat"
         android:tint="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_anchor="@id/contentContainer"
+        app:layout_anchorGravity="bottom|end"/>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
