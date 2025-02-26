@@ -13,6 +13,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
@@ -30,4 +31,13 @@ public interface ApiService {
 
     @GET("EspaciosEstacionamiento/disponibles") // Asegúrate de que la URL es correcta
     Call<List<EspacioEstacionamiento>> getEspaciosDisponibles(@Header("Authorization") String token);
+
+    @GET("Reservas/disponibles")
+    Call<List<EspacioEstacionamiento>> getEspaciosDisponiblesPorFecha(
+            @Header("Authorization") String token,
+            @Query("fechaInicio") String fechaInicio,
+            @Query("fechaFin") String fechaFin,
+            @Query("tipo") String tipo
+    );
+
 }

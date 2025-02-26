@@ -7,31 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import com.fermin2049.parking.R;
+import com.fermin2049.parking.databinding.FragmentReservarBinding;
 import com.fermin2049.parking.iu.adapters.EspacioAdapter;
 import com.fermin2049.parking.data.models.EspacioEstacionamiento;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 public class ReservarFragment extends Fragment {
 
-    private DashboardViewModel dashboardViewModel;
-    private EditText etFechaReserva, etHoraReserva;
-    private Spinner spinnerTipo;
-    private Button btnReservar;
-    private RecyclerView recyclerEspacios;
+    private FragmentReservarBinding binding;
+    private ReservarViewModel reservarViewModel;
     private EspacioAdapter espacioAdapter;
 
     @Nullable
@@ -39,74 +31,74 @@ public class ReservarFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_reservar, container, false);
+        binding = FragmentReservarBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-        dashboardViewModel = new ViewModelProvider(requireActivity()).get(DashboardViewModel.class);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
-        etFechaReserva = view.findViewById(R.id.etFechaReserva);
-        etHoraReserva = view.findViewById(R.id.etHoraSalida);
-        spinnerTipo = view.findViewById(R.id.spinnerTipo);
-        btnReservar = view.findViewById(R.id.btnFiltrar);
-        recyclerEspacios = view.findViewById(R.id.recyclerEspacios);
+        // Inicializar ViewModel
+        reservarViewModel = new ViewModelProvider(this).get(ReservarViewModel.class);
 
-        // Configurar RecyclerView
-        recyclerEspacios.setLayoutManager(new LinearLayoutManager(getContext()));
+        // Configurar RecyclerView para los espacios
+        binding.recyclerEspacios.setLayoutManager(new LinearLayoutManager(getContext()));
         espacioAdapter = new EspacioAdapter(new ArrayList<>(), espacio ->
-                dashboardViewModel.irAPago(requireActivity(), espacio));
-        recyclerEspacios.setAdapter(espacioAdapter);
+                reservarViewModel.irAPago(requireActivity(), espacio));
+        binding.recyclerEspacios.setAdapter(espacioAdapter);
 
-        // Configurar Spinner
-        ArrayAdapter<String> tipoAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item,
+        // Configurar el Spinner para el tipo de espacio
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(getContext(),
+                android.R.layout.simple_spinner_item,
                 new String[]{"Normal", "Motocicleta", "Discapacitados"});
-        tipoAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerTipo.setAdapter(tipoAdapter);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerTipo.setAdapter(spinnerAdapter);
 
-        // Configurar DatePicker para la fecha
-        etFechaReserva.setOnClickListener(v -> {
+        // Configurar DatePicker para el EditText de fecha
+        binding.etFechaReserva.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view1, year, month, dayOfMonth) -> {
-                Calendar selectedDate = Calendar.getInstance();
-                selectedDate.set(year, month, dayOfMonth);
-                SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                etFechaReserva.setText(sdf.format(selectedDate.getTime()));
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), (view12, year, month, dayOfMonth) -> {
+                Calendar selected = Calendar.getInstance();
+                selected.set(year, month, dayOfMonth);
+                // Formatear la fecha como "dd-MM-yyyy"
+                java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+                binding.etFechaReserva.setText(sdf.format(selected.getTime()));
             }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
             datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
             datePickerDialog.show();
         });
 
-        // Configurar TimePicker para la hora (ejemplo)
-        etHoraReserva.setOnClickListener(v -> {
+        // Configurar TimePicker para el EditText de hora
+        binding.etHoraSalida.setOnClickListener(v -> {
             Calendar calendar = Calendar.getInstance();
             TimePickerDialog timePickerDialog = new TimePickerDialog(getContext(), (view1, hourOfDay, minute) -> {
-                String hora = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
-                etHoraReserva.setText(hora);
+                String timeFormatted = String.format(Locale.getDefault(), "%02d:%02d", hourOfDay, minute);
+                binding.etHoraSalida.setText(timeFormatted);
             }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), true);
             timePickerDialog.show();
         });
 
-        // Acción del botón "Reservar" que filtra por tipo y fecha (puedes agregar validaciones adicionales)
-        btnReservar.setOnClickListener(v -> {
-            String fecha = etFechaReserva.getText().toString();
-            String hora = etHoraReserva.getText().toString();
-            String tipo = spinnerTipo.getSelectedItem().toString();
-
-            if (fecha.isEmpty() || hora.isEmpty()) {
-                // Mostrar alerta (por ejemplo, SweetAlertDialog) indicando que debe ingresar fecha y hora
-                return;
-            }
-
-            // Aquí podrías combinar fecha y hora en un Date u otro formato para filtrar según la reserva
-            // Por ahora, se filtra solo por tipo:
-            dashboardViewModel.filtrarEspacios(tipo);
+        // Al presionar el botón, se recogen los valores y se delega al ViewModel
+        binding.btnFiltrar.setOnClickListener(v -> {
+            String fechaStr = binding.etFechaReserva.getText().toString(); // "dd-MM-yyyy"
+            String horaStr = binding.etHoraSalida.getText().toString(); // "HH:mm"
+            String tipoSeleccionado = binding.spinnerTipo.getSelectedItem().toString();
+            // Llamada al método del ViewModel que se encarga de procesar y llamar a la API
+            reservarViewModel.buscarReservas(fechaStr, horaStr, tipoSeleccionado);
         });
 
-        // Observar cambios en la lista filtrada
-        dashboardViewModel.getEspaciosDisponibles().observe(getViewLifecycleOwner(), espacios -> {
+        // Observar los espacios disponibles y actualizar el RecyclerView
+        reservarViewModel.getEspaciosDisponibles().observe(getViewLifecycleOwner(), espacios -> {
             if (espacios != null) {
                 espacioAdapter.updateData(espacios);
             }
         });
+    }
 
-        return view;
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

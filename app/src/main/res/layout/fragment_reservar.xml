@@ -51,7 +51,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint="Hora salida (HH:mm)"
+                android:hint="Hora Legada (HH:mm)"
                 android:focusable="false"
                 android:clickable="true"
                 android:background="@drawable/gradient_input_background"
@@ -71,7 +71,7 @@
             android:id="@+id/btnFiltrar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Reservar"
+            android:text="Buscar Reserva"
             android:layout_marginTop="8dp"/>
 
         <!-- RecyclerView para mostrar los espacios disponibles -->

@@ -75,6 +75,29 @@ public class DashboardViewModel extends AndroidViewModel {
         });
     }
 
+    public void cargarEspaciosDisponiblesPorFechaHora(String fechaInicio, String fechaFin, String tipo) {
+        String token = "Bearer " + obtenerToken();
+        if (token.isEmpty() || token.equals("Bearer ")) {
+            return;
+        }
+        apiService.getEspaciosDisponiblesPorFecha(token, fechaInicio, fechaFin, tipo)
+                .enqueue(new Callback<List<EspacioEstacionamiento>>() {
+                    @Override
+                    public void onResponse(Call<List<EspacioEstacionamiento>> call, Response<List<EspacioEstacionamiento>> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            listaCompletaEspacios = response.body();
+                            espaciosDisponibles.setValue(listaCompletaEspacios);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<List<EspacioEstacionamiento>> call, Throwable t) {
+                        // Aquí puedes mostrar un mensaje de error usando, por ejemplo, SweetAlertDialog
+                    }
+                });
+    }
+
+
+
     /**
      * Filtra la lista de espacios disponibles por tipo.
      * @param tipo El tipo de espacio seleccionado (por ejemplo, "Normal", "Motocicleta" o "Discapacitados").
