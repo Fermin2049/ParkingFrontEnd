@@ -5,6 +5,7 @@ import com.fermin2049.parking.data.models.LoginResponse;
 import com.fermin2049.parking.data.models.LoginRequest;
 import com.fermin2049.parking.data.models.RecuperarPasswordRequest;
 import com.fermin2049.parking.data.models.RegisterRequest;
+import com.fermin2049.parking.data.models.Reserva;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public interface ApiService {
     @POST("auth/login-google")
     Call<LoginResponse> loginWithGoogle(@Body String googleIdToken);
 
-    @GET("EspaciosEstacionamiento/disponibles") // Asegúrate de que la URL es correcta
+    @GET("EspaciosEstacionamiento/disponibles")
     Call<List<EspacioEstacionamiento>> getEspaciosDisponibles(@Header("Authorization") String token);
 
     @GET("Reservas/disponibles")
@@ -40,4 +41,6 @@ public interface ApiService {
             @Query("tipo") String tipo
     );
 
+    @POST("Reservas")
+    Call<Reserva> registrarReserva(@Header("Authorization") String token, @Body Reserva reserva);
 }
