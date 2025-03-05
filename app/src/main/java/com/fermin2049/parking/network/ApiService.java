@@ -3,6 +3,9 @@ package com.fermin2049.parking.network;
 import com.fermin2049.parking.data.models.EspacioEstacionamiento;
 import com.fermin2049.parking.data.models.LoginResponse;
 import com.fermin2049.parking.data.models.LoginRequest;
+import com.fermin2049.parking.data.models.PaymentConfirmationDto;
+import com.fermin2049.parking.data.models.PaymentRequest;
+import com.fermin2049.parking.data.models.PaymentResponse;
 import com.fermin2049.parking.data.models.RecuperarPasswordRequest;
 import com.fermin2049.parking.data.models.RegisterRequest;
 import com.fermin2049.parking.data.models.Reserva;
@@ -14,6 +17,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -41,6 +45,21 @@ public interface ApiService {
             @Query("tipo") String tipo
     );
 
+    @POST("checkout/preferences")
+    Call<PaymentResponse> createPaymentPreference(
+            @Header("Authorization") String accessToken,
+            @Body PaymentRequest paymentRequest
+    );
+
     @POST("Reservas")
     Call<Reserva> registrarReserva(@Header("Authorization") String token, @Body Reserva reserva);
+
+    @GET("PaymentsStatus/{paymentId}")
+    Call<String> getPaymentStatus(@Path("paymentId") String paymentId);
+
+    @POST("PagosManagement/confirmar")
+    Call<Object> confirmPayment(@Header("Authorization") String token, @Body PaymentConfirmationDto dto);
+
+
+
 }

@@ -59,6 +59,14 @@ dependencies {
     //recaptcha
     implementation("com.github.hCaptcha.hcaptcha-android-sdk:sdk:4.0.3")
 
+    // Glide
+    implementation("androidx.browser:browser:1.8.0")
+
+    // Google Maps
+    implementation ("com.google.android.gms:play-services-maps:18.1.0")
+    implementation ("com.google.android.gms:play-services-location:21.0.1")
+
+
 
     implementation ("androidx.biometric:biometric:1.2.0-alpha05")
 
