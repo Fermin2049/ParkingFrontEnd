@@ -135,16 +135,28 @@ public class PaymentFragment extends Fragment {
             public void onTick(long millisUntilFinished) {
                 binding.tvActiveTimer.setText(formatTime(millisUntilFinished));
             }
+
             @Override
             public void onFinish() {
-                binding.tvActiveCounter.setText("Reserva finalizada");
-                binding.tvActiveTimer.setText("");
+                binding.tvActiveCounter.setVisibility(View.GONE);
+                binding.tvActiveTimer.setVisibility(View.GONE);
+
+                // Mostramos el mensaje de agradecimiento
+                binding.tvGracias.setVisibility(View.VISIBLE);
+
+                // Opcionalmente también un SweetAlertDialog:
+                new SweetAlertDialog(getContext(), SweetAlertDialog.SUCCESS_TYPE)
+                        .setTitleText("¡Reserva finalizada!")
+                        .setContentText("Gracias por usar nuestro estacionamiento. ¡Esperamos verte pronto!")
+                        .show();
+
                 mViewModel.completeReservation();
                 Log.d(TAG, "Active countdown finished");
                 if (onFinish != null) onFinish.run();
             }
         }.start();
     }
+
 
     private String formatTime(long millis) {
         long totalSeconds = millis / 1000;
