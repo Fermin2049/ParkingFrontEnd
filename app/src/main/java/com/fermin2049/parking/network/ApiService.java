@@ -9,14 +9,13 @@ import com.fermin2049.parking.data.models.PaymentResponse;
 import com.fermin2049.parking.data.models.RecuperarPasswordRequest;
 import com.fermin2049.parking.data.models.RegisterRequest;
 import com.fermin2049.parking.data.models.Reserva;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -60,6 +59,7 @@ public interface ApiService {
     @POST("PagosManagement/confirmar")
     Call<Object> confirmPayment(@Header("Authorization") String token, @Body PaymentConfirmationDto dto);
 
-
-
+    // Endpoint para actualizar el estado de la reserva
+    @PUT("Reservas/{id}")
+    Call<Void> updateReservaEstado(@Header("Authorization") String token, @Path("id") int id, @Body Reserva reserva);
 }

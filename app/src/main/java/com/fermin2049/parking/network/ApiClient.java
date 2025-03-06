@@ -23,10 +23,10 @@ public class ApiClient {
     public static Retrofit getClient() {
         if (retrofit == null) {
             Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss") // Asegura el formato en la serialización
                     .registerTypeAdapter(Date.class, new DateDeserializer())
                     .create();
 
-            // Usar un cliente OkHttp que confíe en todos los certificados (solo para desarrollo)
             OkHttpClient okHttpClient = getUnsafeOkHttpClient();
 
             retrofit = new Retrofit.Builder()

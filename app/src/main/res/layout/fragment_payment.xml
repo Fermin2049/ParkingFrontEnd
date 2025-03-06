@@ -47,5 +47,24 @@
             android:text="Confirmar Pago"
             android:layout_gravity="center_horizontal" />
 
+        <!-- TextView para mostrar el contador de espera (hasta el inicio de la reserva) -->
+        <TextView
+            android:id="@+id/tvWaitCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reserva inicia en: "
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="16dp" />
+
+        <!-- TextView para mostrar el contador activo (tiempo restante de la reserva) -->
+        <TextView
+            android:id="@+id/tvActiveCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tiempo restante de la reserva: "
+            android:textSize="18sp"
+            android:textColor="@android:color/black"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
 </ScrollView>
