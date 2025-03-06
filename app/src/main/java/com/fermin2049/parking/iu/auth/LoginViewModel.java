@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.IntentSender;
 import androidx.biometric.BiometricPrompt;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -20,13 +21,13 @@ import com.google.android.gms.auth.api.identity.SignInClient;
 import com.google.android.gms.auth.api.identity.SignInCredential;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import java.util.concurrent.Executor;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import androidx.activity.result.IntentSenderRequest;
 
 public class LoginViewModel extends ViewModel {
     private Context context;
@@ -52,23 +53,23 @@ public class LoginViewModel extends ViewModel {
                 .build();
     }
 
-    public void signInWithGoogle() {
+    // Se modifica este método para recibir un callback con el IntentSenderRequest
+    public void signInWithGoogle(OnGoogleSignInIntentReadyListener listener) {
         oneTapClient.beginSignIn(signInRequest)
                 .addOnSuccessListener(result -> {
-                    try {
-                        ((Activity) context).startIntentSenderForResult(
-                                result.getPendingIntent().getIntentSender(), RC_SIGN_IN,
-                                null, 0, 0, 0, null);
-                    } catch (Exception e) {
-                        showErrorDialog(context.getString(R.string.google_signin_error), context.getString(R.string.generic_error));
-                    }
+                    IntentSenderRequest request = new IntentSenderRequest.Builder(
+                            result.getPendingIntent().getIntentSender()
+                    ).build();
+                    listener.onIntentReady(request);
                 })
                 .addOnFailureListener(e ->
-                        showErrorDialog(context.getString(R.string.google_signin_error), context.getString(R.string.generic_error)));
+                        showErrorDialog(context.getString(R.string.google_signin_error), context.getString(R.string.generic_error))
+                );
     }
 
-    public void handleGoogleSignInResult(int requestCode, Intent data) {
-        if (requestCode == RC_SIGN_IN) {
+    // Ahora se usa el resultCode para verificar si la respuesta es RESULT_OK
+    public void handleGoogleSignInResult(int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
             try {
                 SignInCredential credential = oneTapClient.getSignInCredentialFromIntent(data);
                 String googleIdToken = credential.getGoogleIdToken();
@@ -80,6 +81,8 @@ public class LoginViewModel extends ViewModel {
             } catch (Exception e) {
                 showErrorDialog(context.getString(R.string.google_signin_error), context.getString(R.string.generic_error));
             }
+        } else {
+            showErrorDialog(context.getString(R.string.google_signin_error), context.getString(R.string.generic_error));
         }
     }
 
@@ -89,6 +92,7 @@ public class LoginViewModel extends ViewModel {
         firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && firebaseAuth.getCurrentUser() != null) {
+                        // Aquí se podría llamar al API para validar el token con el backend si es necesario
                         guardarCredenciales(googleIdToken, null, null);
                         navigateToMainActivity();
                     } else {
@@ -141,14 +145,15 @@ public class LoginViewModel extends ViewModel {
         biometricPrompt.authenticate(new BiometricPrompt.PromptInfo.Builder()
                 .setTitle(context.getString(R.string.authentication_error))
                 .setSubtitle(context.getString(R.string.use_fingerprint))
-                .setNegativeButtonText(context.getString(R.string.cancel)).build());
+                .setNegativeButtonText(context.getString(R.string.cancel))
+                .build());
     }
 
     private void guardarCredenciales(String token, String email, String password) {
         SharedPreferences prefs = context.getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("token", token);
-        if(email!=null && password!=null){
+        if (email != null && password != null) {
             editor.putString("email", email);
             editor.putString("password", password);
         }
@@ -166,5 +171,10 @@ public class LoginViewModel extends ViewModel {
                 .setTitleText(title)
                 .setContentText(message)
                 .show();
+    }
+
+    // Interfaz para el callback cuando el IntentSenderRequest esté listo
+    public interface OnGoogleSignInIntentReadyListener {
+        void onIntentReady(IntentSenderRequest request);
     }
 }
