@@ -1,70 +1,142 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:background="@drawable/bg1"
+    tools:context=".iu.payment.PaymentFragment">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <!-- Título -->
+    <TextView
+        android:id="@+id/tvTituloPago"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:text="Detalles de Pago"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="32dp" />
 
-        <!-- Información de la reserva -->
-        <TextView
-            android:id="@+id/tvReservaInfo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Información de Reserva"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="16dp" />
+    <!-- Precio por hora -->
+    <TextView
+        android:id="@+id/tvTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Precio por hora: $0.00"
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloPago"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="32dp" />
 
-        <!-- Monto base de la reserva -->
-        <TextView
-            android:id="@+id/tvTotal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Monto base"
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:layout_marginBottom="16dp" />
+    <!-- Campo de horas -->
+    <EditText
+        android:id="@+id/etHoras"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Ingresa cantidad de horas"
+        android:inputType="number"
+        android:background="@drawable/gradient_input_background"
+        android:padding="12dp"
+        android:textColor="@android:color/white"
+        android:textColorHint="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvTotal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
 
-        <!-- EditText para ingresar cantidad de horas -->
-        <EditText
-            android:id="@+id/etHoras"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Ingresa cantidad de horas (solo enteros)"
-            android:inputType="number"
-            android:layout_marginBottom="16dp" />
+    <!-- Nota informativa -->
+    <TextView
+        android:id="@+id/tvNota"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Si no sabes cuánto tiempo tardarás, se cobrará una hora mínima. Recuerda que el estacionamiento cierra a las 21:00 hrs."
+        android:textSize="14sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/etHoras"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+        android:padding="8dp" />
 
-        <!-- Botón para confirmar el pago simulado -->
-        <Button
-            android:id="@+id/btnConfirmPayment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Confirmar Pago"
-            android:layout_gravity="center_horizontal" />
+    <!-- Botón de confirmación con estilo proporcionado -->
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnConfirmPayment"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="24dp"
+        android:background="@drawable/gradient_button_background"
+        android:text="Confirmar Pago"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/tvNota"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-        <!-- TextView para mostrar el contador de espera (hasta el inicio de la reserva) -->
-        <TextView
-            android:id="@+id/tvWaitCounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Reserva inicia en: "
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="16dp" />
+    <!-- Contador de espera -->
+    <TextView
+        android:id="@+id/tvWaitCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reserva inicia en: "
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/btnConfirmPayment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
 
-        <!-- TextView para mostrar el contador activo (tiempo restante de la reserva) -->
-        <TextView
-            android:id="@+id/tvActiveCounter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tiempo restante de la reserva: "
-            android:textSize="18sp"
-            android:textColor="@android:color/black"
-            android:layout_marginTop="8dp" />
-    </LinearLayout>
-</ScrollView>
+    <!-- Contador numérico centrado y grande -->
+    <TextView
+        android:id="@+id/tvWaitTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvWaitCounter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+    <!-- Contador de tiempo restante -->
+    <TextView
+        android:id="@+id/tvActiveCounter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tiempo restante de la reserva: "
+        android:textSize="18sp"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvWaitTimer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp" />
+
+    <!-- Contador numérico para tiempo restante -->
+    <TextView
+        android:id="@+id/tvActiveTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/white"
+        app:layout_constraintTop_toBottomOf="@id/tvActiveCounter"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

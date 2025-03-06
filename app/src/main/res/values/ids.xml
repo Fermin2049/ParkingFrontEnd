@@ -5,4 +5,8 @@
     <item name="phoneInput" type="id" />
     <item name="licensePlateInput" type="id" />
     <item name="registerButton" type="id" />
+    <item name="tvTituloPago" type="id" />
+    <item name="tvNota" type="id" />
+    <item name="tvWaitTimer" type="id" />
+    <item name="tvActiveTimer" type="id" />
 </resources>

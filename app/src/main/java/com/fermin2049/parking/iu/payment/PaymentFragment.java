@@ -48,8 +48,8 @@ public class PaymentFragment extends Fragment {
             double totalAmount = getArguments().getDouble("totalAmount");
             String fechaReserva = getArguments().getString("fechaReserva");
             mViewModel.setInitialData(reservaId, totalAmount, fechaReserva);
-            binding.tvTotal.setText("Monto base: $" + totalAmount);
-            binding.tvReservaInfo.setText("Reserva ID: " + reservaId + "\nInicio: " + fechaReserva);
+            binding.tvTotal.setText("Precio por hora: $" + totalAmount);
+            // Se eliminó la asignación a tvReservaInfo, ya que no existe en la vista actual.
         }
 
         binding.btnConfirmPayment.setOnClickListener(v -> {
@@ -85,11 +85,10 @@ public class PaymentFragment extends Fragment {
                             .setConfirmText("Aceptar")
                             .setConfirmClickListener(dialog -> {
                                 dialog.dismissWithAnimation();
-                                // Iniciar contador de espera y luego el activo
                                 if (waitTime > 0) {
                                     startWaitingCountdown(waitTime, () -> {
-                                        // Al finalizar la espera, se oculta el contador de espera y se muestra el activo
                                         binding.tvWaitCounter.setText("Reserva iniciada");
+                                        binding.tvWaitTimer.setText("");
                                         startActiveCountdown(activeDuration, null);
                                     });
                                 } else {
@@ -118,7 +117,7 @@ public class PaymentFragment extends Fragment {
         waitingTimer = new CountDownTimer(duration, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                binding.tvWaitCounter.setText("Reserva inicia en: " + formatTime(millisUntilFinished));
+                binding.tvWaitTimer.setText(formatTime(millisUntilFinished));
             }
             @Override
             public void onFinish() {
@@ -134,11 +133,12 @@ public class PaymentFragment extends Fragment {
         activeTimer = new CountDownTimer(duration, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-                binding.tvActiveCounter.setText("Tiempo restante de la reserva: " + formatTime(millisUntilFinished));
+                binding.tvActiveTimer.setText(formatTime(millisUntilFinished));
             }
             @Override
             public void onFinish() {
                 binding.tvActiveCounter.setText("Reserva finalizada");
+                binding.tvActiveTimer.setText("");
                 mViewModel.completeReservation();
                 Log.d(TAG, "Active countdown finished");
                 if (onFinish != null) onFinish.run();

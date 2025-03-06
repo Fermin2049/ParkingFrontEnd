@@ -66,13 +66,19 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"/>
 
-        <!-- Botón para realizar la acción de Reservar -->
-        <Button
+        <!-- Botón para realizar la acción de Reservar, con el estilo actualizado -->
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnFiltrar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/gradient_button_background"
             android:text="Buscar Reserva"
-            android:layout_marginTop="8dp"/>
+            android:textColor="@color/white"
+            android:textSize="22sp"
+            android:textStyle="bold"/>
 
         <!-- RecyclerView para mostrar los espacios disponibles -->
         <androidx.recyclerview.widget.RecyclerView

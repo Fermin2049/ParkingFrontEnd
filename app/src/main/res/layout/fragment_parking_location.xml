@@ -11,12 +11,18 @@
         android:layout_height="match_parent" />
 
     <!-- Botón para abrir Google Maps (o centrar el mapa) -->
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btnCheckLocation"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ubicar Estacionamiento"
+        android:layout_height="50dp"
         android:layout_gravity="bottom|center_horizontal"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/gradient_button_background"
+        android:text="Ubicar Estacionamiento"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
 
 </FrameLayout>

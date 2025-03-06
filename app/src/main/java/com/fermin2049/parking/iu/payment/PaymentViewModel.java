@@ -108,30 +108,27 @@ public class PaymentViewModel extends AndroidViewModel {
         long currentTime = System.currentTimeMillis();
         long waitTime = Math.max(0, startMillis - currentTime);
 
-        // LOG para debug
-        Log.d(TAG, "=== confirmPayment DEBUG ===");
-        Log.d(TAG, "fechaReservaUtc  : " + fechaReservaUtc);
-        Log.d(TAG, "scheduledStart   : " + scheduledStart.toString() + " (UTC parseado)");
-        Log.d(TAG, "scheduledStartMs : " + startMillis);
-        Log.d(TAG, "currentTimeMs    : " + currentTime);
-        Log.d(TAG, "waitTimeMs       : " + waitTime);
-
         // Actualizamos el LiveData del tiempo de inicio
         scheduledStartTime.setValue(startMillis);
 
-        // Calcular la fecha de expiración sumando los minutos reservados (en milisegundos)
-        long expirationMillis = startMillis + (minutos * 60000L);
-        // Restamos 3 horas (3 * 3600_000 milisegundos)
-        expirationMillis = expirationMillis - (3 * 3600_000L);
-        expirationTime.setValue(expirationMillis);
-        Log.d(TAG, "expirationMillis : " + expirationMillis);
+        // Calculamos la fecha de expiración para el contador sin ajuste
+        long expirationMillisForCountdown = startMillis + (minutos * 60000L);
+        // Calculamos la fecha de expiración ajustada (restando 3 horas) para guardar en la base de datos
+        long expirationMillisForDB = expirationMillisForCountdown - (3 * 3600_000L);
 
-        // Guardamos en SharedPreferences para persistir las fechas
+        // Usamos la variable sin ajuste para el contador activo
+        expirationTime.setValue(expirationMillisForCountdown);
+        Log.d(TAG, "expirationMillisForCountdown : " + expirationMillisForCountdown);
+        Log.d(TAG, "expirationMillisForDB        : " + expirationMillisForDB);
+
+        // Guardamos en SharedPreferences la fecha de inicio y la fecha ajustada para la DB
         SharedPreferences prefs = getApplication().getSharedPreferences("MisPreferencias", Context.MODE_PRIVATE);
-        prefs.edit().putLong(PREF_START, startMillis).putLong(PREF_EXPIRATION, expirationMillis).apply();
+        prefs.edit().putLong(PREF_START, startMillis)
+                .putLong(PREF_EXPIRATION, expirationMillisForDB)
+                .apply();
 
-        // Formateamos la fecha de expiración usando el mismo formateador UTC
-        String fechaExpiracion = sdfUtc.format(new Date(expirationMillis));
+        // Formateamos la fecha de expiración ajustada para enviarla al backend
+        String fechaExpiracion = sdfUtc.format(new Date(expirationMillisForDB));
         // Para efectos de prueba, el monto se calcula en base a minutos (por ejemplo, 100 por minuto)
         double monto = minutos * 100.0;
 
@@ -171,6 +168,7 @@ public class PaymentViewModel extends AndroidViewModel {
             }
         });
     }
+
 
 
 

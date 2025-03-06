@@ -5,8 +5,8 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class ParkingLocationViewModel extends ViewModel {
     // Datos fijos de la ubicación del estacionamiento
-    private final double latitude = -34.6037;
-    private final double longitude = -58.3816;
+    private final double latitude = -33.30342609139104;
+    private final double longitude = -66.33225007056996;
     private final String label = "Estacionamiento";
 
     public double getLatitude() {
